@@ -92,6 +92,15 @@
 			status = "disabled";
 		};
 
+		firmwarekms: firmwarekms@7e600000 {
+			compatible = "raspberrypi,rpi-firmware-kms";
+			/* SMI interrupt reg */
+			reg = <0x7e600000 0x100>;
+			interrupts = <2 16>;
+			brcm,firmware = <&firmware>;
+			status = "disabled";
+		};
+
 		smi: smi@7e600000 {
 			compatible = "brcm,bcm2835-smi";
 			reg = <0x7e600000 0x100>;
