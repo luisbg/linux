@@ -57,6 +57,7 @@ static struct dentry *befs_fh_to_dentry(struct super_block *sb,
 				struct fid *fid, int fh_len, int fh_type);
 static struct dentry *befs_fh_to_parent(struct super_block *sb,
 				struct fid *fid, int fh_len, int fh_type);
+static struct dentry *befs_get_parent(struct dentry *child);
 
 static const struct super_operations befs_sops = {
 	.alloc_inode	= befs_alloc_inode,	/* allocate a new inode */
@@ -92,6 +93,7 @@ static const struct address_space_operations befs_symlink_aops = {
 static const struct export_operations befs_export_operations = {
 	.fh_to_dentry	= befs_fh_to_dentry,
 	.fh_to_parent	= befs_fh_to_parent,
+	.get_parent	= befs_get_parent,
 };
 
 /* 
@@ -664,6 +666,12 @@ static struct dentry *befs_fh_to_parent(struct super_block *sb,
 {
 	return generic_fh_to_parent(sb, fid, fh_len, fh_type,
 				    befs_nfs_get_inode);
+}
+
+static struct dentry *befs_get_parent(struct dentry *child)
+{
+	pr_err("befs_get_parent");
+	return d_obtain_alias(befs_iget(child->d_sb, parent_ino(child)));
 }
 
 enum {
